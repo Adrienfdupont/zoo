@@ -30,20 +30,39 @@ describe('AnimalService', () => {
     expect(service.getAnimals()).toContain(animal);
   });
 
-  it('Should modify an animal', () => {
+  it('should not add a duplicate animal', () => {
+    service.addAnimal(animal);
+    service.addAnimal(animal);
+    expect(service.getAnimals().filter(a => a.uuid === animal.uuid).length).toBe(1);
+  });
+
+  it('should modify an animal', () => {
     service.addAnimal(animal);
 
     const newAge = 5;
-    const newAnimal: Animal = { ...animal, age: newAge};
+    const newAnimal: Animal = { ...animal, age: newAge };
 
     service.modifyAnimal(newAnimal);
-    expect(service.getAnimal(animal.uuid).age).toBe(newAge);
+    expect(service.getAnimal(animal.uuid)?.age).toBe(newAge);
+  });
+
+  it('should not modify a non-existing animal', () => {
+    const newAnimal: Animal = { ...animal, uuid: uuidv4() };
+    service.modifyAnimal(newAnimal);
+    expect(service.getAnimals()).not.toContain(newAnimal);
   });
 
   it('should remove an animal', () => {
     service.addAnimal(animal);
 
     service.removeAnimal(animal.uuid);
-    expect(service.getAnimals()).not.toContain(animal.uuid);
+    expect(service.getAnimals()).not.toContain(animal);
+  });
+
+  it('should not remove a non-existing animal', () => {
+    const nonExistingUuid = uuidv4();
+    const initialCount = service.getAnimals().length;
+    service.removeAnimal(nonExistingUuid);
+    expect(service.getAnimals().length).toBe(initialCount);
   });
 });
