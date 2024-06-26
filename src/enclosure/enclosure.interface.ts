@@ -1,10 +1,7 @@
-import { Animal } from "../animal/animal.interface";
-import { Species } from "../species/species.interface";
+import { Animal, Species } from '../animal/animal.interface';
 
 export interface Enclosure {
-    uuid: string;
-    name: string;
-    size: number;
-    speiciesAllowed: Species[];
-    animals: Animal[];
+  maxSize: number;
+  speciesAllowed: Species[];
+  animals: Animal[];
 }

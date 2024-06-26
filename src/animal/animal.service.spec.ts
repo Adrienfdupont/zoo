@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AnimalService } from './animal.service';
-import { Animal } from './animal.interface';
-import { Species } from 'src/species/species.interface';
+import { Animal, Species } from './animal.interface';
 import { v4 as uuidv4 } from 'uuid';
 
 describe('AnimalService', () => {
@@ -15,8 +14,12 @@ describe('AnimalService', () => {
     service = module.get<AnimalService>(AnimalService);
   });
 
-  const species: Species = { name: 'Porc' };
-  const animal: Animal = { uuid: uuidv4(), name: 'Clément', age: 4, species: species };
+  const animal: Animal = {
+    uuid: uuidv4(),
+    name: 'Clément',
+    age: 4,
+    species: Species.PIG,
+  };
 
   it('should be defined', () => {
     expect(service).toBeDefined();
